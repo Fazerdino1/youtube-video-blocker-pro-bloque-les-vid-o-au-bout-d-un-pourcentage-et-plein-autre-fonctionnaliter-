@@ -1,0 +1,902 @@
+/* ══════════════════════════════════════════════════════════════════════
+   YouTube Blocker Pro — content.css v4.0 (dédupliqué)
+══════════════════════════════════════════════════════════════════════ */
+
+
+/* ── Bouton toolbar masthead ── */
+#ytbp-toolbar-btn {
+    margin-right: 14px;
+}
+#ytbp-toolbar-btn button {
+    background: linear-gradient(135deg, #8b5cf6, #d946ef) !important;
+color: #fff !important; border: none !important;
+padding: 7px 18px !important; border-radius: 20px !important;
+font-weight: 700 !important; cursor: pointer !important;
+font-size: 13px !important; font-family: Roboto, Arial, sans-serif !important;
+transition: filter .2s, transform .15s !important;
+width: auto !important; display: inline-flex !important; align-items: center !important;
+box-shadow: 0 2px 12px rgba(139,92,246,0.5) !important;
+letter-spacing: .3px !important;
+}
+#ytbp-toolbar-btn button:hover {
+    filter: brightness(1.18) !important; transform: translateY(-1px) !important;
+}
+
+/* ── Iframe dashboard ── */
+#ytbp-iframe-dash {
+    position: fixed; top: 58px; right: 18px;
+width: 380px; height: 90vh; max-height: 720px;
+border: 1px solid rgba(139,92,246,0.25); border-radius: 18px;
+box-shadow: 0 20px 60px rgba(0,0,0,.9), 0 0 0 1px rgba(139,92,246,0.15);
+z-index: 9999999; display: none; background: transparent;
+transition: opacity .2s, transform .2s;
+}
+
+/* ── Overlay de blocage ── */
+#ytbp-overlay {
+    position: fixed; inset: 0;
+background: rgba(10,10,10,0.97);
+backdrop-filter: blur(12px);
+color: #fff; z-index: 9999998; display: none;
+flex-direction: column; justify-content: center; align-items: center;
+font-family: Roboto, sans-serif; text-align: center; padding: 40px;
+}
+.ytbp-ov-icon {
+    font-size: 72px; margin-bottom: 24px; filter: drop-shadow(0 0 20px rgba(139,92,246,.6));
+}
+#ytbp-ov-reason {
+    font-size: 18px; color: rgba(255,255,255,.75); margin-bottom: 36px;
+max-width: 440px; line-height: 1.7;
+}
+.ytbp-ov-btns {
+    display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+}
+.ytbp-ov-btns button {
+    padding: 12px 28px !important; border: none !important;
+border-radius: 24px !important; cursor: pointer !important;
+font-size: 15px !important; font-weight: 700 !important; width: auto !important;
+}
+#ytbp-skip-btn {
+    background: linear-gradient(135deg,#8b5cf6,#d946ef) !important; color: #fff !important;
+}
+#ytbp-home-btn {
+    background: rgba(255,255,255,.1) !important; color: #fff !important; border: 1px solid rgba(255,255,255,.15) !important;
+}
+
+/* ── Boutons vidéo ── */
+#ytbp-video-btns {
+    display: inline-flex !important; gap: 8px !important;
+align-items: center !important; margin-right: 8px !important; vertical-align: middle !important;
+}
+.ytbp-vbtn {
+    display: inline-flex !important; align-items: center !important; gap: 6px !important;
+background: var(--yt-spec-badge-chip-background, rgba(255,255,255,.1)) !important;
+color: var(--yt-spec-text-primary, #fff) !important;
+border: 1px solid var(--yt-spec-10-percent-layer, rgba(255,255,255,.15)) !important;
+border-radius: 20px !important; padding: 7px 14px !important;
+font-size: 14px !important; font-weight: 600 !important; cursor: pointer !important;
+font-family: Roboto, Arial, sans-serif !important;
+transition: background .15s, transform .1s !important;
+width: auto !important; margin: 0 !important;
+}
+.ytbp-vbtn:hover:not(:disabled) {
+    background: rgba(139,92,246,.3) !important;
+border-color: rgba(139,92,246,.5) !important;
+transform: translateY(-1px) !important;
+}
+.ytbp-vbtn:disabled {
+    opacity: .4 !important; cursor: default !important;
+}
+.ytbp-vbtn-icon {
+    font-size: 15px;
+}
+.ytbp-vbtn-label {
+    font-size: 13px;
+}
+
+/* ── Menu contextuel ── */
+.ytbp-ctx-sep {
+    height: 1px; background: rgba(255,255,255,.1); margin: 4px 0;
+}
+.ytbp-ctx-item {
+    display: flex !important; align-items: center; gap: 14px;
+padding: 0 16px; height: 40px; cursor: pointer; font-size: 14px;
+font-family: Roboto, Arial, sans-serif; color: var(--yt-spec-text-primary, #f1f1f1);
+transition: background .1s;
+}
+.ytbp-ctx-item:hover {
+    background: rgba(139,92,246,.2);
+}
+.ytbp-ctx-icon {
+    font-size: 16px; width: 24px; text-align: center;
+}
+
+/* ══════════════════════════════════════════════════════════════════════ */
+.ytbp-hidden {
+    display: none !important;
+}
+.ytbp-blurred {
+    filter: blur(10px) grayscale(80%) opacity(0.25) !important;
+pointer-events: none !important; user-select: none !important;
+transition: filter .3s !important;
+}
+.ytbp-hide-duration {
+    display: none !important;
+}
+.ytbp-hide-views {
+    display: none !important;
+}
+.ytbp-hide-date {
+    display: none !important;
+}
+
+/* Nuances de gris */
+html.ytbp-gray {
+    filter: grayscale(100%) !important;
+}
+
+/* Anti-métriques page vidéo */
+html.ytbp-nometric #top-level-buttons-computed {
+    display: none !important;
+}
+
+/* Barre latérale */
+html.ytbp-noside #guide-wrapper {
+    display: none !important;
+}
+
+/* Mini-lecteur */
+html.ytbp-nomini .ytp-miniplayer-button {
+    display: none !important;
+}
+
+/* Durée des miniatures */
+html.ytbp-nodur ytd-thumbnail-overlay-time-status-renderer:not([overlay-style="LIVE"]) {
+    display: none !important;
+}
+
+/* ── CACHER LE NOMBRE DE VUES ── (ultra-robuste watch page + miniatures) */
+html.ytbp-noviews .yt-formatted-string[title*="view"] {
+    display: none !important;
+}
+
+/* ── CACHER LA DATE DE PUBLICATION ── (ultra-robuste watch page + miniatures) */
+html.ytbp-nodate .yt-formatted-string[title*="ago"] {
+    display: none !important;
+}
+
+/* ── CACHER LOGO CHAÎNE (avatar des YouTubeurs partout) ── */
+html.ytbp-nochlogo :is(
+    yt-avatar-shape,
+    .yt-avatar-shape,
+    yt-img-shadow#avatar,
+    #avatar-btn,
+    #avatar-link,
+    .yt-user-avatar,
+    #channel-avatar,
+    #channel-thumbnail,
+    ytd-channel-avatar-skeleton-renderer,
+    .yt-spec-avatar-shape,
+    #avatar,
+    #avatar-container,
+    #avatar-section,
+    .yt-lockup-metadata-view-model-wiz__avatar,
+    .yt-lockup-metadata-view-model__avatar,
+    #owner-sub-count + yt-img-shadow,
+    yt-img-shadow.ytd-video-owner-renderer,
+    yt-img-shadow.ytd-comment-renderer,
+    #author-thumbnail.ytd-comment-renderer,
+    .ytd-video-owner-renderer#avatar,
+    #owner ytd-video-owner-renderer yt-img-shadow,
+    #avatar-container.ytd-video-owner-renderer,
+    .yt-lockup-metadata-view-model__avatar
+) {
+    display: none !important;
+}
+
+/* ── CACHER NOM DE CHAÎNE (partout sur YouTube) ── */
+html.ytbp-nochname .ytd-video-meta-block #channel-name {
+    display: none !important;
+}
+
+/* ── CACHER BOUTON CRÉER ── */
+html.ytbp-nocreate ytd-topbar-menu-button-renderer#buttons ytd-button-renderer {
+    display: none !important;
+}
+
+/* ── CACHER COMPTE GOOGLE ── */
+html.ytbp-noaccount #endpoint.ytd-account-menu-renderer {
+    display: none !important;
+}
+
+/* ── Toast ── */
+#ytbp-content-toast {
+    position: fixed; bottom: 28px; left: 50%;
+transform: translateX(-50%) translateY(16px);
+background: rgba(15,15,20,0.95);
+backdrop-filter: blur(12px);
+color: #fff; font-family: Roboto, Arial, sans-serif;
+font-size: 14px; font-weight: 600;
+padding: 10px 22px; border-radius: 24px;
+border: 1px solid rgba(139,92,246,0.3);
+z-index: 9999999; opacity: 0; pointer-events: none;
+transition: opacity .3s, transform .3s;
+white-space: nowrap; box-shadow: 0 4px 24px rgba(139,92,246,.25);
+}
+#ytbp-content-toast.ytbp-tv {
+    opacity: 1; transform: translateX(-50%) translateY(0);
+}
+
+/* ── Minuteur flottant ── */
+#ytbp-floating-timer {
+    position: fixed; top: 68px; right: 18px;
+background: rgba(10, 10, 15, 0.45) !important;
+backdrop-filter: blur(12px) !important;
+-webkit-backdrop-filter: blur(12px) !important;
+color: #ff0055;
+font-weight: 700; font-family: 'Outfit', 'Courier New', Courier, monospace; font-size: 16px;
+padding: 6px 14px; border-radius: 12px;
+z-index: 9999999; border: 1px solid rgba(255, 0, 85, 0.35); pointer-events: none;
+box-shadow: 0 8px 32px rgba(255, 0, 85, 0.12), 0 0 8px rgba(255, 0, 85, 0.15);
+letter-spacing: 0.5px;
+transition: opacity 0.3s ease;
+}
+
+/* ── CACHER LE NOMBRE D'ABONNÉS ── */
+html.ytbp-nosubcount :is(
+    #owner-sub-count,
+    #subscriber-count,
+    #subscribers,
+    #sub-count,
+    [id*="owner-sub-count"],
+    [id*="subscriber-count"],
+    [id*="sub-count"],
+    [class*="subscriber-count"],
+    [class*="sub-count"],
+    yt-formatted-string[id*="subscriber-count"],
+    yt-formatted-string[id*="sub-count"],
+    yt-formatted-string[id*="owner-sub-count"],
+    span[id*="subscriber-count"],
+    span[id*="sub-count"],
+    span[class*="subscriber-count"],
+    .yt-subscription-button-subscriber-count-branded-horizontal,
+    yt-formatted-string[title*="abonné"],
+    yt-formatted-string[title*="subscriber"]
+) {
+    display: none !important;
+}
+
+/* ── CACHER LES NOTIFICATIONS ── */
+html.ytbp-nonotif :is(
+    ytd-notification-topbar-button-renderer,
+    yt-notification-action-button-renderer,
+    ytd-subscription-notification-toggle-button-renderer-wiz,
+    yt-subscription-notification-toggle-button-html-accessor,
+    ytd-subscription-notification-toggle-button-renderer,
+    #notification-preference-button,
+    #notification-button,
+    [aria-label*="Notification" i],
+    [title*="Notification" i],
+    yt-icon-button[aria-label*="notification" i],
+    button[aria-label*="notification" i]
+) {
+    display: none !important;
+}
+
+/* ── CACHER LA BARRE DE RECHERCHE + MICRO ── */
+html.ytbp-nosearch #masthead-container #center {
+    display: none !important;
+}
+html.ytbp-nosearch ytd-button-renderer.ytd-masthead[button-renderer] {
+    display: none !important;
+}
+
+/* ── FILTRES DESCRIPTION : LIENS ── */
+html.ytbp-nodesclinks ytd-expandable-video-description-body-renderer a {
+    display: none !important;
+}
+
+/* ── FILTRES DESCRIPTION : COPYRIGHT / INFOCARDS ── */
+html.ytbp-nodescright ytd-macro-markers-list-renderer {
+    display: none !important;
+}
+
+/* ── FILTRES DESCRIPTION : TRANSCRIPTION ── */
+html.ytbp-nodesctr ytd-video-description-transcript-section-renderer {
+    display: none !important;
+}
+
+/* ── TOUS LES FILTRES DESCRIPTION ACTIFS → masquer la description entière ── */
+html.ytbp-nodescall :is(
+    ytd-video-secondary-info-renderer,
+    #description-inline-expander,
+    ytd-watch-metadata #description,
+    #description.ytd-watch-metadata,
+    #description-inner,
+    ytd-structured-description-content-renderer,
+    #expandable-metadata,
+    #metadata-line + ytd-metadata-row-container-renderer,
+    ytd-expandable-video-description-body-renderer,
+    ytd-text-inline-expander,
+    #description-and-actions,
+    #description-wrapper,
+    .ytd-watch-metadata#description,
+    ytd-metadata-row-container-renderer,
+    #description-and-actions-info
+) {
+    display: none !important;
+}
+
+/* ── SUGGESTIONS LATÉRALES : CHIPS/FILTRES ── */
+html.ytbp-nosuggchips :is(ytd-watch-next-secondary-results-renderer ytd-feed-filter-chip-bar-renderer, ytd-watch-next-secondary-results-renderer yt-feed-filter-chip-bar-view-model) {
+    display: none !important;
+}
+
+/* ── SUGGESTIONS LATÉRALES : MINIATURES ── */
+html.ytbp-nosuggthumbs :is(
+    #secondary,
+    ytd-watch-next-secondary-results-renderer,
+    #related,
+    ytd-compact-video-renderer,
+    ytd-compact-radio-renderer,
+    ytd-compact-playlist-renderer,
+    .ytp-endscreen-content,
+    .ytp-videowall-still,
+    .html5-endscreen,
+    .ytp-ce-element,
+    .ytp-pause-overlay,
+    .ytp-pause-overlay-container
+) :is(
+    ytd-thumbnail,
+    #thumbnail,
+    yt-image,
+    .yt-core-image,
+    img,
+    .ytp-videowall-still-image-bg,
+    .ytp-ce-element-show
+) {
+    display: none !important;
+}
+
+/* ── SUGGESTIONS LATÉRALES : TOUT LE PANNEAU ── */
+html.ytbp-nosuggpanel :is(
+    #secondary,
+    ytd-watch-next-secondary-results-renderer,
+    #related,
+    ytd-compact-video-renderer,
+    ytd-compact-radio-renderer,
+    ytd-compact-playlist-renderer,
+    .ytp-endscreen-content,
+    .ytp-videowall-still,
+    .html5-endscreen,
+    .ytp-ce-element,
+    .ytp-ce-cover,
+    .ytp-ce-expanding-image,
+    .ytp-pause-overlay,
+    .ytp-pause-overlay-container
+) {
+    display: none !important;
+}
+
+/* ── CACHER LES CATÉGORIES / CHIPS ACCUEIL ── */
+html.ytbp-nohomechips :is(#browse-chips-wrapper, ytd-feed-filter-chip-bar-renderer, yt-feed-filter-chip-bar-view-model, #chips-wrapper, #chips, ytd-feed-filter-chip-bar-view-model, #chips-content, feed-filter-chip-bar-renderer, #chips-container) > * {
+    display: none !important;
+}
+html.ytbp-nohomechips :is(#browse-chips-wrapper, ytd-feed-filter-chip-bar-renderer, yt-feed-filter-chip-bar-view-model, #chips-wrapper, #chips, ytd-feed-filter-chip-bar-view-model, #chips-content, feed-filter-chip-bar-renderer, #chips-container) {
+    height: 0 !important; min-height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important;
+}
+
+/* Logo chaîne (toutes zones + nouveaux modèles Lit) */
+html.ytbp-nochlogo .yt-lockup-metadata-view-model__avatar {
+    display: none !important;
+}
+
+/* Nom chaîne (toutes zones + nouveaux modèles Lit) */
+html.ytbp-nochname .yt-lockup-metadata-view-model__title {
+    display: none !important;
+}
+
+/* Date de publication (toutes zones + nouveaux modèles Lit) */
+html.ytbp-nodate :is(yt-content-metadata-view-model, .yt-content-metadata-view-model-wiz) span:last-of-type {
+    display: none !important;
+}
+
+/* ── Touches / et * : masquer l'UI du lecteur ── */
+html.ytbp-hide-ui .ytp-cards-teaser {
+    display: none !important;
+opacity: 0 !important;
+pointer-events: none !important;
+}
+html.ytbp-hide-ui video {
+    cursor: none !important;
+}
+
+/* ── BLOQUER LES LIVES ── */
+html.ytbp-nolives ytd-compact-video-renderer:has(.badge-style-type-live-now-alternate) {
+    display: none !important;
+}
+
+/* ── CACHER TENDANCES & SHOPPING ── */
+html.ytbp-notrendingshop ytd-mini-guide-entry-renderer:has(a[href="/feed/shopping"]) {
+    display: none !important;
+}
+
+/* ── ANONYMISATION DES BADGES DE CERTIFICATION ── */
+html.ytbp-nobadges .ytd-channel-name yt-icon {
+    display: none !important;
+}
+
+/* ── BOUTONS DE BLOCAGE RAPIDE SUR MINIATURES ── */
+.ytbp-quick-block-btn {
+    position: absolute;
+top: 6px;
+right: 6px;
+background: rgba(10, 10, 15, 0.85) !important;
+border: 1px solid rgba(255, 255, 255, 0.2) !important;
+border-radius: 50% !important;
+color: #fff !important;
+width: 26px !important;
+height: 26px !important;
+font-size: 11px !important;
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+cursor: pointer !important;
+z-index: 9999 !important;
+opacity: 0 !important;
+pointer-events: auto !important;
+transition: opacity 0.2s, background 0.2s, transform 0.1s !important;
+box-shadow: 0 2px 8px rgba(0,0,0,0.5) !important;
+}
+ytd-rich-grid-media:hover .ytbp-quick-block-btn,
+ytd-rich-item-renderer:hover .ytbp-quick-block-btn,
+ytd-video-renderer:hover .ytbp-quick-block-btn,
+ytd-compact-video-renderer:hover .ytbp-quick-block-btn,
+ytd-grid-video-renderer:hover .ytbp-quick-block-btn,
+ytd-shelf-renderer ytd-video-renderer:hover .ytbp-quick-block-btn,
+ytd-thumbnail:hover .ytbp-quick-block-btn,
+#thumbnail:hover .ytbp-quick-block-btn {
+    opacity: 1 !important;
+}
+.ytbp-quick-block-btn:hover {
+    background: #ef4444 !important;
+border-color: #ef4444 !important;
+transform: scale(1.1) !important;
+}
+
+/* ── GRADATION AUTOMATIQUE (THÉÂTRE) ── */
+html.ytbp-dimmed #above-the-fold {
+    opacity: 0.08 !important;
+transition: opacity 1.2s ease-in-out !important;
+pointer-events: none;
+}
+html.ytbp-dimmed #above-the-fold:hover {
+    opacity: 1 !important;
+pointer-events: auto;
+}
+
+/* ── NOUVELLES CLASSES YTBP (19 Fonctionnalités) ── */
+html.ytbp-blurthumbs ytd-thumbnail img {
+    filter: blur(12px) grayscale(50%) !important;
+transition: filter 0.3s ease-out !important;
+}
+html.ytbp-blurthumbs ytd-thumbnail:hover img {
+    filter: none !important;
+transition-delay: 0.1s !important;
+}
+html.ytbp-nosubbtn #sponsor-button {
+    display: none !important;
+}
+html.ytbp-onlypinned ytd-comment-thread-renderer:not(:has(ytd-pinned-comment-badge-renderer)) {
+    display: none !important;
+}
+
+/* Bordure dorée pour chaînes favorites */
+.ytbp-favorite-channel {
+    border: 2px solid gold !important;
+    border-radius: 8px !important;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.4) !important;
+    padding: 4px !important;
+}
+
+/* Custom Logo Image */
+#ytbp-custom-logo {
+    height: 24px !important;
+    object-fit: contain !important;
+}
+
+/* ── CACHER LES SECTIONS DE LA BARRE LATÉRALE SÉPARÉMENT (Traitement programmatique JS) ── */
+html.ytbp-nosidebarfooter :is(ytd-guide-footer-renderer, #guide-links-primary, #guide-links-secondary, #footer) > * {
+    display: none !important;
+}
+html.ytbp-nosidebarfooter :is(ytd-guide-footer-renderer, #guide-links-primary, #guide-links-secondary, #footer) {
+    border: none !important; margin: 0 !important; padding: 0 !important; height: 0 !important; min-height: 0 !important;
+}
+
+/* ── CACHER LES ÉTAGÈRES DE RECHERCHE ── */
+html.ytbp-nosearchshelves :is(ytd-shelf-renderer, ytd-horizontal-card-list-renderer, ytd-search-pyv-renderer, ytd-reel-shelf-renderer, yt-shelf-view-model) > * {
+    display: none !important;
+}
+html.ytbp-nosearchshelves :is(ytd-shelf-renderer, ytd-horizontal-card-list-renderer, ytd-search-pyv-renderer, ytd-reel-shelf-renderer, yt-shelf-view-model) {
+    height: 0 !important; min-height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important;
+}
+
+/* ── CACHER DYNAMIQUEMENT LES SECTIONS DU GUIDE (JS) ── */
+ytd-guide-section-renderer.ytbp-guide-hide-subs > * {
+    display: none !important;
+}
+ytd-guide-section-renderer.ytbp-guide-hide-subs {
+    border: none !important; margin: 0 !important; padding: 0 !important; height: 0 !important; min-height: 0 !important;
+}
+
+ytd-guide-section-renderer.ytbp-guide-hide-you > * {
+    display: none !important;
+}
+ytd-guide-section-renderer.ytbp-guide-hide-you {
+    border: none !important; margin: 0 !important; padding: 0 !important; height: 0 !important; min-height: 0 !important;
+}
+
+ytd-guide-section-renderer.ytbp-guide-hide-explore > * {
+    display: none !important;
+}
+ytd-guide-section-renderer.ytbp-guide-hide-explore {
+    border: none !important; margin: 0 !important; padding: 0 !important; height: 0 !important; min-height: 0 !important;
+}
+
+ytd-guide-section-renderer.ytbp-guide-hide-more > * {
+    display: none !important;
+}
+ytd-guide-section-renderer.ytbp-guide-hide-more {
+    border: none !important; margin: 0 !important; padding: 0 !important; height: 0 !important; min-height: 0 !important;
+}
+
+/* ==========================================================================
+   YouTube Blocker Pro v4.1 — Focus, Pomodoro & Motivation Dashboard Styles
+   ========================================================================== */
+
+/* ── Custom Logo Text (37) ── */
+.ytbp-logo-text-glow {
+    font-family: 'Outfit', 'Inter', Roboto, sans-serif !important;
+    font-size: 19px !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.5px !important;
+    background: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    display: inline-block !important;
+    filter: drop-shadow(0 2px 8px rgba(139, 92, 246, 0.45)) !important;
+    animation: pulseGlowLogo 3s ease infinite !important;
+}
+
+@keyframes pulseGlowLogo {
+    0%, 100% { filter: drop-shadow(0 2px 4px rgba(139, 92, 246, 0.4)); }
+    50% { filter: drop-shadow(0 2px 12px rgba(139, 92, 246, 0.7)); }
+}
+
+/* ── Focus Hours warn mode (blurred page) ── */
+.ytbp-focus-blurred ytd-app {
+    filter: blur(12px) grayscale(40%) !important;
+    pointer-events: none !important;
+    user-select: none !important;
+    transition: filter 0.3s ease !important;
+}
+
+#ytbp-focus-warn-banner {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 48px;
+    background: linear-gradient(90deg, rgba(239, 68, 68, 0.95), rgba(245, 158, 11, 0.95)) !important;
+    color: #fff !important;
+    z-index: 9999999 !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    font-family: Roboto, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+#ytbp-focus-warn-banner button {
+    background: #fff !important;
+    color: #ef4444 !important;
+    border: none !important;
+    padding: 6px 16px !important;
+    border-radius: 18px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    transition: background 0.2s;
+}
+
+#ytbp-focus-warn-banner button:hover {
+    background: #f3f3f3 !important;
+}
+
+/* ── Pomodoro floating widget ── */
+#ytbp-pomodoro-widget {
+    position: fixed;
+    top: 120px; right: 18px;
+    background: rgba(10, 10, 15, 0.65) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 16px !important;
+    padding: 12px 14px !important;
+    width: 130px;
+    z-index: 9999999 !important;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Outfit', 'Inter', Roboto, sans-serif;
+    color: #fff;
+    user-select: none;
+    transition: border-color 0.3s;
+}
+
+#ytbp-pomodoro-widget.pomo-mode-work {
+    border-color: rgba(139, 92, 246, 0.45) !important;
+    box-shadow: 0 12px 40px rgba(139, 92, 246, 0.15), 0 0 8px rgba(139, 92, 246, 0.15) !important;
+}
+
+#ytbp-pomodoro-widget.pomo-mode-break {
+    border-color: rgba(16, 185, 129, 0.45) !important;
+    box-shadow: 0 12px 40px rgba(16, 185, 129, 0.15), 0 0 8px rgba(16, 185, 129, 0.15) !important;
+}
+
+.ytbp-pomo-drag {
+    width: 100%;
+    text-align: center;
+    color: rgba(255,255,255,0.3);
+    font-size: 11px;
+    margin-top: -6px;
+    margin-bottom: 2px;
+}
+
+.ytbp-pomo-status {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+#ytbp-pomodoro-widget.pomo-mode-work .ytbp-pomo-status {
+    color: #a855f7;
+}
+
+#ytbp-pomodoro-widget.pomo-mode-break .ytbp-pomo-status {
+    color: #10b981;
+}
+
+.ytbp-pomo-time {
+    font-size: 20px;
+    font-weight: 800;
+    font-family: monospace;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.ytbp-pomo-controls {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
+}
+
+.ytbp-pomo-controls button {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+    color: #fff !important;
+    font-size: 12px !important;
+    padding: 4px 8px !important;
+    cursor: pointer !important;
+    width: 36px !important;
+    height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.ytbp-pomo-controls button:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* ── Motivation Dashboard Overlay ── */
+.ytbp-motivation-dashboard {
+    position: fixed; inset: 0;
+    background: linear-gradient(135deg, #09090e 0%, #110e1a 100%) !important;
+    z-index: 9999998;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', 'Inter', Roboto, sans-serif;
+    padding: 24px;
+    color: #f1f1f5;
+}
+
+.ytbp-motivation-dashboard::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: 
+        radial-gradient(circle 500px at 15% 15%, rgba(139, 92, 246, 0.15), transparent 80%),
+        radial-gradient(circle 400px at 85% 85%, rgba(217, 70, 239, 0.1), transparent 80%);
+    pointer-events: none;
+}
+
+.ytbp-dash-card {
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(30px) !important;
+    -webkit-backdrop-filter: blur(30px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-radius: 28px !important;
+    padding: 40px !important;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.02) !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    animation: pomoFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes pomoFadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.ytbp-dash-logo {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #8b5cf6;
+    margin-bottom: 12px;
+}
+
+.ytbp-dash-title {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #f1f1f5 0%, #a8a8b5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.ytbp-dash-reason {
+    font-size: 14px;
+    color: #8892a4;
+    margin-bottom: 24px;
+}
+
+.ytbp-quote-card {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-left: 3px solid #8b5cf6 !important;
+    padding: 16px 20px !important;
+    border-radius: 0 16px 16px 0 !important;
+    margin-bottom: 24px !important;
+    width: 100%;
+    text-align: left;
+}
+
+.ytbp-quote-text {
+    font-size: 14px;
+    font-style: italic;
+    line-height: 1.6;
+    color: #e2e2ec;
+    margin-bottom: 6px;
+}
+
+.ytbp-quote-author {
+    font-size: 11px;
+    font-weight: 700;
+    color: #8b5cf6;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ytbp-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.ytbp-stat-box {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid rgba(255, 255, 255, 0.04) !important;
+    border-radius: 16px !important;
+    padding: 14px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ytbp-stat-val {
+    font-size: 20px;
+    font-weight: 800;
+    color: #d946ef;
+}
+
+.ytbp-stat-lbl {
+    font-size: 10px;
+    color: #8892a4;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+}
+
+.ytbp-dash-pomo {
+    background: rgba(139, 92, 246, 0.06) !important;
+    border: 1px solid rgba(139, 92, 246, 0.15) !important;
+    border-radius: 16px !important;
+    padding: 12px 24px !important;
+    margin-bottom: 24px !important;
+    width: 100%;
+}
+
+.ytbp-dash-pomo-lbl {
+    font-size: 11px;
+    font-weight: 700;
+    color: #a855f7;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.ytbp-dash-pomo-time {
+    font-size: 24px;
+    font-weight: 800;
+    font-family: monospace;
+    color: #fff;
+}
+
+.ytbp-dash-links {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.ytbp-dash-btn {
+    flex: 1;
+    padding: 12px 20px !important;
+    border: none !important;
+    border-radius: 14px !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+    transition: all 0.2s;
+    font-family: inherit !important;
+    width: auto !important;
+}
+
+.ytbp-dash-btn.btn-home {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #f1f1f5 !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+.ytbp-dash-btn.btn-home:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.ytbp-dash-btn.btn-work {
+    background: linear-gradient(135deg, #8b5cf6, #d946ef) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 14px rgba(139, 92, 246, 0.3);
+}
+
+.ytbp-dash-btn.btn-work:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 6px 18px rgba(139, 92, 246, 0.4);
+}

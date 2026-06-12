@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="utils.js"></script>
+</head>
+<body>
+
+<button id="closeIframeBtn" aria-label="Fermer">×</button>
+
+<div id="view-main" class="active-view">
+    <div class="app-header">
+        <div class="app-logo-wrap">🛡️</div>
+        <div class="app-titles">
+            <div class="app-title">YT Blocker Pro</div>
+            <div class="app-subtitle">Garde le contrôle de ton temps</div>
+        </div>
+        <div class="header-actions">
+            <select id="selProfile" class="profile-select" title="Profil Utilisateur" style="margin-right: 4px;">
+                <option value="default">👤 Adulte</option>
+                <option value="child">👶 Enfant</option>
+                <option value="work">💼 Travail</option>
+                <option value="guest">👻 Invité</option>
+            </select>
+            <button id="btnThemeToggle" class="btn-icon" title="Changer le thème">🌙</button>
+            <button id="btnGoToCloud"     class="btn-icon" title="Cloud & Communauté">☁️</button>
+            <button id="btnGoToStats"   class="btn-icon" title="Tableau de bord">📊</button>
+        </div>
+    </div>
+
+    <div class="quick-row">
+        <button id="btnGoToVideos" class="quick-btn">
+            <span class="quick-icon">🚫</span>
+            <span class="quick-label">Vidéos</span>
+            <span class="count-badge" id="badge-videos">0</span>
+        </button>
+        <button id="btnGoToChannels" class="quick-btn">
+            <span class="quick-icon">📺</span>
+            <span class="quick-label">Chaînes</span>
+            <span class="count-badge" id="badge-channels">0</span>
+        </button>
+        <button id="btnGoToHistory" class="quick-btn">
+            <span class="quick-icon">📜</span>
+            <span class="quick-label">Historique</span>
+        </button>
+        <button id="btnGoToChannelStats" class="quick-btn">
+            <span class="quick-icon">🏆</span>
+            <span class="quick-label">Classement</span>
+        </button>
+    </div>
+
+    <div class="section-card premium-card">
+        <div class="section-title" style="display: flex; align-items: center; justify-content: space-between;">
+            <span>✨ Mode Zen (Anti-Distraction)</span>
+            <span class="premium-badge">PRO</span>
+        </div>
+        <p class="section-desc" style="margin-bottom: 8px;">Désactivez instantanément les éléments visuels perturbateurs de YouTube.</p>
+        <div class="zen-buttons-grid">
+            <button class="zen-btn" data-key="hideChannelLogo">
+                <span class="zen-icon">🖼️</span>
+                <span class="zen-text">Cacher Logos</span>
+            </button>
+            <button class="zen-btn" data-key="hideChannelName">
+                <span class="zen-icon">✏️</span>
+                <span class="zen-text">Cacher Noms</span>
+            </button>
+            <button class="zen-btn" data-key="hideViewCount">
+                <span class="zen-icon">👁️</span>
+                <span class="zen-text">Cacher Vues</span>
+            </button>
+            <button class="zen-btn" data-key="hidePublishDate">
+                <span class="zen-icon">📅</span>
+                <span class="zen-text">Cacher Dates</span>
+            </button>
+        </div>
+    </div>
+    <!-- ⏱️ MINUTEUR POMODORO v4.1 -->
+    <div class="section-card premium-card" id="pomo-card">
+        <div class="section-title" style="display: flex; align-items: center; justify-content: space-between;">
+            <span>⏱️ Minuteur Pomodoro</span>
+            <span class="premium-badge">FOCUS</span>
+        </div>
+        <div class="pomo-container" style="display: flex; flex-direction: column; align-items: center; padding: 10px 0;">
+            <div class="pomo-circle-wrap" style="position: relative; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+                <svg width="120" height="120" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="52" stroke="rgba(255,255,255,0.06)" stroke-width="6" fill="transparent"></circle>
+                    <circle id="pomo-progress-ring" cx="60" cy="60" r="52" stroke="var(--accent)" stroke-width="6" fill="transparent" stroke-dasharray="326.7" stroke-dashoffset="0" stroke-linecap="round" style="transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 0.5s ease, stroke 0.5s;"></circle>
+                </svg>
+                <div class="pomo-circle-text" style="position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <span id="pomo-timer-display" style="font-size: 22px; font-weight: 800; font-family: monospace; letter-spacing: 0.5px;">25:00</span>
+                    <span id="pomo-mode-display" style="font-size: 9px; font-weight: 700; text-transform: uppercase; color: var(--txt-muted); margin-top: 2px;">Travail</span>
+                </div>
+            </div>
+            <div class="pomo-buttons" style="display: flex; gap: 8px; width: 100%;">
+                <button id="pomo-btn-play" class="btn-primary" style="flex: 2; height: 34px; padding: 0 10px;">▶️ Démarrer</button>
+                <button id="pomo-btn-skip" class="btn-secondary" style="flex: 1; height: 34px; padding: 0 5px;" title="Passer">⏭️</button>
+                <button id="pomo-btn-reset" class="btn-dark" style="flex: 1; height: 34px; padding: 0 5px;" title="Réinitialiser">🔄</button>
+            </div>
+            <div class="pomo-presets" style="display: flex; justify-content: space-between; width: 100%; margin-top: 10px; gap: 6px;">
+                <button class="pomo-preset-btn btn-ghost btn-sm" data-mins="25" data-type="work" style="padding: 4px; font-size: 10px; font-weight: 700; height: 26px;">💼 25m Focus</button>
+                <button class="pomo-preset-btn btn-ghost btn-sm" data-mins="5" data-type="break" style="padding: 4px; font-size: 10px; font-weight: 700; height: 26px;">☕ 5m Pause</button>
+                <button class="pomo-preset-btn btn-ghost btn-sm" data-mins="15" data-type="break" style="padding: 4px; font-size: 10px; font-weight: 700; height: 26px;">🏝️ 15m</button>
+            </div>
+        </div>
+    </div>
+    <div class="section-card" id="filters-card">
+        <div class="section-header-row">
+            <div class="section-title">🛡️ Filtres Rapides</div>
+            <input type="text" id="filterSearch" class="filter-search-input" placeholder="Rechercher…">
+            <div class="desc-toggle-bar">
+                <label class="switch" title="Afficher les descriptions">
+                    <input type="checkbox" id="showDescriptions">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <div id="activeFiltersBar" class="active-filters-bar" style="display:none">
+            <span id="activeFiltersCount"></span>
+            <button id="btnClearFilters" class="btn-clear-filters">Désactiver tout</button>
+        </div>
+
+        <div class="toggles-grid" id="togglesGrid">
+
+            <div class="toggle-section-sep">🏠 Accueil & Navigation</div>
+
+            <div class="toggle-row" draggable="true" data-key="blockShorts" data-desc="Cache la section Shorts sur l'accueil et bloque les URLs /shorts/.">
+                <span class="drag-handle" title="Réordonner">⠿</span>
+                <span class="trow-icon">🩳</span>
+                <label for="blockShorts" class="trow-label">Désactiver Shorts</label>
+                <label class="switch"><input type="checkbox" id="blockShorts"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideHomeChips" data-desc="Cache la barre de catégories (Tous, Jeux vidéo, Musique…) sur l'accueil et la recherche.">
+                <span class="drag-handle" title="Réordonner">⠿</span>
+                <span class="trow-icon">🏷️</span>
+                <label for="hideHomeChips" class="trow-label">Cacher Catégories</label>
+                <label class="switch"><input type="checkbox" id="hideHomeChips"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideSearchShelves" data-desc="Cache les étagères promotionnelles et de recommandations (Découvrez d'autres sujets, etc.) dans la recherche.">
+                <span class="drag-handle" title="Réordonner">⠿</span>
+                <span class="trow-icon">📚</span>
+                <label for="hideSearchShelves" class="trow-label">Cacher Étagères Recherche</label>
+                <label class="switch"><input type="checkbox" id="hideSearchShelves"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideCommunityPosts" data-desc="Cache les publications textuelles/images (Derniers posts YouTube) sur l'accueil.">
+                <span class="drag-handle" title="Réordonner">⠿</span>
+                <span class="trow-icon">📝</span>
+                <label for="hideCommunityPosts" class="trow-label">Cacher Posts Communauté</label>
+                <label class="switch"><input type="checkbox" id="hideCommunityPosts"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideNotifications" data-desc="Cache la cloche de notifications et son badge rouge.">
+                <span class="drag-handle" title="Réordonner">⠿</span>
+                <span class="trow-icon">🔔</span>
+                <label for="hideNotifications" class="trow-label">Cacher Notifications</label>
+                <label class="switch"><input type="checkbox" id="hideNotifications"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideSearch" data-desc="Cache la barre de recherche et le bouton microphone.">
+                <span class="drag-handle" title="Réordonner">⠿</span>
+                <span class="trow-icon">🔍</span>
+                <label for="hideSearch" class="trow-label">Cacher Barre de Recherche</label>
+                <label class="switch"><input type="checkbox" id="hideSearch"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideTrendingShop" data-desc="Masque les onglets Tendances et Shopping dans le guide de navigation latéral.">
+                <span class="drag-handle" title="Réordonner">⠿</span>
+                <span class="trow-icon">🔥</span>
+                <label for="hideTrendingShop" class="trow-label">Masquer Tendances/Shopping</label>
+                <label class="switch"><input type="checkbox" id="hideTrendingShop"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="blockMixes" data-desc="Cache les playlists générées par YouTube ('Mix', 'My Mix').">
+                <span class="drag-handle" title="Réordonner">⠿</span>
+                <span class="trow-icon">📻</span>
+                <label for="blockMixes" class="trow-label">Bloquer les Mix</label>
+                <label class="switch"><input type="checkbox" id="blockMixes"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="blockMovies" data-desc="Cache les suggestions de type 'Films et TV'.">
+                <span class="drag-handle" title="Réordonner">⠿</span>
+                <span class="trow-icon">🎬</span>
+                <label for="blockMovies" class="trow-label">Cacher Films/TV</label>
+                <label class="switch"><input type="checkbox" id="blockMovies"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-section-sep">🖼️ Miniatures</div>
+
+            <div class="toggle-row" draggable="true" data-key="blurThumbnails" data-desc="Rend les miniatures floues pour éviter le biais visuel (l'image s'affiche au survol).">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🌫️</span>
+                <label for="blurThumbnails" class="trow-label">Miniatures Floutées</label>
+                <label class="switch"><input type="checkbox" id="blurThumbnails"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideChannelLogo" data-desc="Cache l'avatar/photo du YouTubeur sous les miniatures.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🖼️</span>
+                <label for="hideChannelLogo" class="trow-label">Cacher Logo Chaîne</label>
+                <label class="switch"><input type="checkbox" id="hideChannelLogo"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideChannelName" data-desc="Cache le nom de la chaîne sous les miniatures.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">✏️</span>
+                <label for="hideChannelName" class="trow-label">Cacher Nom Chaîne</label>
+                <label class="switch"><input type="checkbox" id="hideChannelName"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideViewCount" data-desc="Masque le nombre de vues sous les miniatures.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">👁️</span>
+                <label for="hideViewCount" class="trow-label">Cacher Nombre de Vues</label>
+                <label class="switch"><input type="checkbox" id="hideViewCount"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideDuration" data-desc="Cache la durée en bas à droite de chaque miniature.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">⏱️</span>
+                <label for="hideDuration" class="trow-label">Cacher la Durée</label>
+                <label class="switch"><input type="checkbox" id="hideDuration"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hidePublishDate" data-desc="Cache la date de publication sous les miniatures (il y a X jours…).">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">📅</span>
+                <label for="hidePublishDate" class="trow-label">Cacher Date de Publication</label>
+                <label class="switch"><input type="checkbox" id="hidePublishDate"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-section-sep">📺 Page Vidéo</div>
+
+            <div class="toggle-row" draggable="true" data-key="hideComments" data-desc="Cache la section commentaires. Utile pour rester concentré.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">💬</span>
+                <label for="hideComments" class="trow-label">Cacher Commentaires</label>
+                <label class="switch"><input type="checkbox" id="hideComments"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="onlyPinnedComment" data-desc="Masque tous les commentaires sauf celui épinglé par le créateur.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">📌</span>
+                <label for="onlyPinnedComment" class="trow-label">Seulement Commentaire Épinglé</label>
+                <label class="switch"><input type="checkbox" id="onlyPinnedComment"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideInfoPanels" data-desc="Cache les alertes d'information YouTube (ex: Wikipédia, contexte) sous le lecteur.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">ℹ️</span>
+                <label for="hideInfoPanels" class="trow-label">Cacher Alertes Info</label>
+                <label class="switch"><input type="checkbox" id="hideInfoPanels"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideMetrics" data-desc="Cache vues, likes et abonnés sur la page vidéo.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🙈</span>
+                <label for="hideMetrics" class="trow-label">Anti-Métriques</label>
+                <label class="switch"><input type="checkbox" id="hideMetrics"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="blockMiniplayer" data-desc="Supprime le bouton mini-lecteur.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">📺</span>
+                <label for="blockMiniplayer" class="trow-label">Bloquer le Mini-Lecteur</label>
+                <label class="switch"><input type="checkbox" id="blockMiniplayer"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="enableWheelVolume" data-desc="Permet de changer le volume avec la molette de la souris n'importe où sur la vidéo.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🎚️</span>
+                <label for="enableWheelVolume" class="trow-label">Volume à la Molette</label>
+                <label class="switch"><input type="checkbox" id="enableWheelVolume"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="autoTheaterMode" data-desc="Bascule automatiquement le lecteur en mode cinéma à l'ouverture de la vidéo.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🍿</span>
+                <label for="autoTheaterMode" class="trow-label">Mode Cinéma Auto</label>
+                <label class="switch"><input type="checkbox" id="autoTheaterMode"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="disableAutoplay" data-desc="Désactive la lecture automatique de la prochaine vidéo.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🛑</span>
+                <label for="disableAutoplay" class="trow-label">Bloquer l'Autoplay</label>
+                <label class="switch"><input type="checkbox" id="disableAutoplay"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="blockLives" data-desc="Bloque les streams en direct (LIVE) sur l'accueil et les résultats.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🔴</span>
+                <label for="blockLives" class="trow-label">Bloquer les Lives</label>
+                <label class="switch"><input type="checkbox" id="blockLives"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="blockPremieres" data-desc="Bloque les vidéos programmées en 'Première' qui polluent l'accueil.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🎬</span>
+                <label for="blockPremieres" class="trow-label">Bloquer les Premières</label>
+                <label class="switch"><input type="checkbox" id="blockPremieres"><span class="slider"></span></label>
+            </div>
+
+
+            <div class="toggle-row" draggable="true" data-key="autoHighestQuality" data-desc="Force la qualité de lecture maximale disponible pour chaque vidéo.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">💎</span>
+                <label for="autoHighestQuality" class="trow-label">Qualité Maximale Auto</label>
+                <label class="switch"><input type="checkbox" id="autoHighestQuality"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hidePlayerUiKeys" data-desc="Permet de masquer l'UI du lecteur avec la touche [/] et la réafficher avec [*].">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">⌨️</span>
+                <label for="hidePlayerUiKeys" class="trow-label">Touches / & * (UI Lecteur)</label>
+                <label class="switch"><input type="checkbox" id="hidePlayerUiKeys"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideDescAll" data-desc="Masque entièrement la description sous le lecteur vidéo.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">📝</span>
+                <label for="hideDescAll" class="trow-label">Cacher Description (tout)</label>
+                <label class="switch"><input type="checkbox" id="hideDescAll"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideDescLinks" data-desc="Cache tous les liens dans la description (réseaux sociaux, URLs).">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🔗</span>
+                <label for="hideDescLinks" class="trow-label">Cacher Liens</label>
+                <label class="switch"><input type="checkbox" id="hideDescLinks"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideDescCopyright" data-desc="Cache le bloc copyright (Directed by, Studio…) dans la description.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">©️</span>
+                <label for="hideDescCopyright" class="trow-label">Cacher Copyright</label>
+                <label class="switch"><input type="checkbox" id="hideDescCopyright"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideDescTranscription" data-desc="Cache la section Transcription sous la description.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">📄</span>
+                <label for="hideDescTranscription" class="trow-label">Cacher Transcription</label>
+                <label class="switch"><input type="checkbox" id="hideDescTranscription"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideSuggChips" data-desc="Cache les filtres/chips en haut de la liste des suggestions.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🏷️</span>
+                <label for="hideSuggChips" class="trow-label">Cacher Filtres Suggestions</label>
+                <label class="switch"><input type="checkbox" id="hideSuggChips"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideSuggThumbs" data-desc="Cache les miniatures dans la liste des suggestions vidéo.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🖼️</span>
+                <label for="hideSuggThumbs" class="trow-label">Cacher Miniatures Suggestions</label>
+                <label class="switch"><input type="checkbox" id="hideSuggThumbs"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideSuggPanel" data-desc="Cache tout le panneau latéral des suggestions.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🚫</span>
+                <label for="hideSuggPanel" class="trow-label">Cacher Tout le Panneau</label>
+                <label class="switch"><input type="checkbox" id="hideSuggPanel"><span class="slider"></span></label>
+            </div>
+
+
+
+            <div class="toggle-row" draggable="true" data-key="hideSubCount" data-desc="Cache le nombre d'abonnés sur la page d'une chaîne.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">👥</span>
+                <label for="hideSubCount" class="trow-label">Cacher Nb. Abonnés</label>
+                <label class="switch"><input type="checkbox" id="hideSubCount"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideSubscribeBtn" data-desc="Masque le bouton S'abonner et Rejoindre pour éviter l'accumulation compulsive.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">➕</span>
+                <label for="hideSubscribeBtn" class="trow-label">Cacher Bouton S'abonner</label>
+                <label class="switch"><input type="checkbox" id="hideSubscribeBtn"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="showTimer" data-desc="Affiche un minuteur flottant de la limite de temps.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">⏰</span>
+                <label for="showTimer" class="trow-label">Afficher le Minuteur</label>
+                <label class="switch"><input type="checkbox" id="showTimer"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-section-sep">🎨 Interface Globale</div>
+
+            <div class="toggle-row" draggable="true" data-key="hideBadges" data-desc="Masque les badges de certification de chaînes pour neutraliser le biais d'autorité.">
+                <span class="drag-handle" title="Réordonner">⠿</span>
+                <span class="trow-icon">🎖️</span>
+                <label for="hideBadges" class="trow-label">Anonymiser les Badges</label>
+                <label class="switch"><input type="checkbox" id="hideBadges"><span class="slider"></span></label>
+            </div>
+
+
+            <div class="toggle-row" draggable="true" data-key="hardHideBlocked" data-desc="Fait disparaître complètement les vidéos bloquées. Si désactivé, elles seront juste floutées.">
+                <span class="drag-handle" title="Réordonner">⠿</span>
+                <span class="trow-icon">👻</span>
+                <label for="hardHideBlocked" class="trow-label">Cacher Totalement</label>
+                <label class="switch"><input type="checkbox" id="hardHideBlocked"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="grayscale" data-desc="Passe YouTube en nuances de gris pour réduire l'attrait visuel des miniatures.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🎨</span>
+                <label for="grayscale" class="trow-label">Mode Nuances de Gris</label>
+                <label class="switch"><input type="checkbox" id="grayscale"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideSidebar" data-desc="Cache la barre latérale gauche.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">◀️</span>
+                <label for="hideSidebar" class="trow-label">Cacher Barre Latérale</label>
+                <label class="switch"><input type="checkbox" id="hideSidebar"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideSidebarSubs" data-desc="Cache la section Abonnements de la barre latérale gauche.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🔔</span>
+                <label for="hideSidebarSubs" class="trow-label">Cacher Barre Latérale : Abonnements</label>
+                <label class="switch"><input type="checkbox" id="hideSidebarSubs"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideSidebarYou" data-desc="Cache la section Vous (historique, playlists...) de la barre latérale gauche.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">👤</span>
+                <label for="hideSidebarYou" class="trow-label">Cacher Barre Latérale : Vous</label>
+                <label class="switch"><input type="checkbox" id="hideSidebarYou"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideSidebarExplore" data-desc="Cache la section Explorer (musique, tendances...) de la barre latérale gauche.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🧭</span>
+                <label for="hideSidebarExplore" class="trow-label">Cacher Barre Latérale : Explorer</label>
+                <label class="switch"><input type="checkbox" id="hideSidebarExplore"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideSidebarMore" data-desc="Cache la section Autres contenus YouTube (Premium, Kids...) de la barre latérale gauche.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🎥</span>
+                <label for="hideSidebarMore" class="trow-label">Cacher Barre Latérale : Autres YouTube</label>
+                <label class="switch"><input type="checkbox" id="hideSidebarMore"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideSidebarFooter" data-desc="Cache les liens de mentions légales et de pied de page de la barre latérale gauche.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">📝</span>
+                <label for="hideSidebarFooter" class="trow-label">Cacher Barre Latérale : Mentions Légales</label>
+                <label class="switch"><input type="checkbox" id="hideSidebarFooter"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideCreateBtn" data-desc="Cache le bouton « + Créer » dans la barre de navigation YouTube.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">➕</span>
+                <label for="hideCreateBtn" class="trow-label">Cacher Bouton Créer</label>
+                <label class="switch"><input type="checkbox" id="hideCreateBtn"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="hideAccountBtn" data-desc="Cache le bouton de ton compte Google en haut à droite.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">👤</span>
+                <label for="hideAccountBtn" class="trow-label">Cacher Compte Google</label>
+                <label class="switch"><input type="checkbox" id="hideAccountBtn"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-section-sep">⚙️ Autres</div>
+
+            <div class="toggle-row" draggable="true" data-key="usePagination" data-desc="Pagine les listes bloquées (10/page).">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">📄</span>
+                <label for="usePagination" class="trow-label">Pagination des Listes</label>
+                <label class="switch"><input type="checkbox" id="usePagination"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="enablePanicButton" data-desc="Active le raccourci Alt+P pour fermer instantanément la vidéo.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🚨</span>
+                <label for="enablePanicButton" class="trow-label">Bouton Panique (Alt+P)</label>
+                <label class="switch"><input type="checkbox" id="enablePanicButton"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="enableUninstallProtection" data-desc="Affiche un avertissement pour te dissuader de désinstaller l'extension.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🛡️</span>
+                <label for="enableUninstallProtection" class="trow-label">Protection Désinstallation</label>
+                <label class="switch"><input type="checkbox" id="enableUninstallProtection"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="responsiveBlocks" data-desc="Désactive certains masquages quand la fenêtre est petite (mobile).">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">📱</span>
+                <label for="responsiveBlocks" class="trow-label">Adaptation Petit Écran</label>
+                <label class="switch"><input type="checkbox" id="responsiveBlocks"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-section-sep">🧠 Filtres Anti-Algo</div>
+
+            <div class="toggle-row" draggable="true" data-key="strictLanguage" data-desc="Bloque les vidéos contenant des caractères non-latins dans le titre (Cyrillique, Kanji...).">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🌐</span>
+                <label for="strictLanguage" class="trow-label">Filtre Langue Latine</label>
+                <label class="switch"><input type="checkbox" id="strictLanguage"><span class="slider"></span></label>
+            </div>
+
+            <div class="toggle-row" draggable="true" data-key="antiAutoTranslate" data-desc="Empêche YouTube de traduire automatiquement le titre de la vidéo.">
+                <span class="drag-handle">⠿</span>
+                <span class="trow-icon">🇬🇧</span>
+                <label for="antiAutoTranslate" class="trow-label">Anti-Traduction Auto</label>
+                <label class="switch"><input type="checkbox" id="antiAutoTranslate"><span class="slider"></span></label>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="section-card">
+        <div class="section-title">⏱️ Blocage Automatique</div>
+        <p class="section-desc">Bloque définitivement une vidéo quand tu en as regardé un certain pourcentage.</p>
+        <div class="threshold-row">
+            <span class="thr-label">Bloquer après</span>
+            <input type="number" id="threshold" min="1" max="100">
+            <span class="thr-pct">%</span>
+            <button id="saveThreshold" class="btn-sm btn-dark">Sauvegarder</button>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <div class="section-title">⏳ Filtre par Durée</div>
+        <p class="section-desc">Masque automatiquement les vidéos trop courtes ou trop longues.</p>
+        <div class="duration-filter-grid">
+            <div class="dur-row">
+                <span class="thr-label">⬇️ Bloquer si <</span>
+                <input type="number" id="minDuration" min="0" max="600" placeholder="0">
+                <span class="thr-pct">min</span>
+            </div>
+            <div class="dur-row">
+                <span class="thr-label">⬆️ Bloquer si ></span>
+                <input type="number" id="maxDuration" min="0" max="600" placeholder="0">
+                <span class="thr-pct">min</span>
+            </div>
+        </div>
+        <p class="section-desc" style="margin-top:8px;margin-bottom:0;font-size:11px">0 = désactivé</p>
+        <button id="saveDuration" class="btn-sm btn-dark" style="margin-top:10px">Sauvegarder</button>
+    </div>
+
+    <div class="section-card">
+        <div class="section-title">👁️ Filtre par Vues</div>
+        <p class="section-desc">Masque automatiquement les vidéos avec trop ou trop peu de vues.</p>
+        <div class="duration-filter-grid">
+            <div class="dur-row">
+                <span class="thr-label">⬇️ Bloquer si <</span>
+                <input type="number" id="minViews" min="0" placeholder="0">
+                <span class="thr-pct">vues</span>
+            </div>
+            <div class="dur-row">
+                <span class="thr-label">⬆️ Bloquer si ></span>
+                <input type="number" id="maxViews" min="0" placeholder="0">
+                <span class="thr-pct">vues</span>
+            </div>
+        </div>
+        <p class="section-desc" style="margin-top:8px;margin-bottom:0;font-size:11px">0 = désactivé (ex: 50000)</p>
+        <button id="saveViewsFilter" class="btn-sm btn-dark" style="margin-top:10px">Sauvegarder</button>
+    </div>
+
+    <!-- 📅 PLANIFICATION FOCUS (FOCUS HOURS) v4.1 -->
+    <div class="section-card">
+        <div class="section-title">📅 Planification Focus (Focus Hours)</div>
+        <p class="section-desc">Activez le blocage automatique de YouTube durant des plages horaires configurables.</p>
+        
+        <div class="toggle-row" style="padding: 0 0 10px; border-bottom: none; display: flex; align-items: center; justify-content: space-between;">
+            <label for="focusHoursEnabled" class="trow-label" style="cursor: pointer;">Activer la planification</label>
+            <label class="switch"><input type="checkbox" id="focusHoursEnabled"><span class="slider"></span></label>
+        </div>
+
+        <div id="focus-hours-config-area" style="display: none; border-top: 1px solid var(--border); padding-top: 10px;">
+            <div class="section-label">Jours de blocage :</div>
+            <div class="days-select-grid" style="display: flex; justify-content: space-between; margin-bottom: 12px; gap: 4px;">
+                <label class="day-checkbox-label" style="flex: 1; text-align: center;"><input type="checkbox" class="focus-day-chk" value="1" style="display:block; margin: 0 auto 4px;"><span style="font-size:10px; font-weight:700;">Lun</span></label>
+                <label class="day-checkbox-label" style="flex: 1; text-align: center;"><input type="checkbox" class="focus-day-chk" value="2" style="display:block; margin: 0 auto 4px;"><span style="font-size:10px; font-weight:700;">Mar</span></label>
+                <label class="day-checkbox-label" style="flex: 1; text-align: center;"><input type="checkbox" class="focus-day-chk" value="3" style="display:block; margin: 0 auto 4px;"><span style="font-size:10px; font-weight:700;">Mer</span></label>
+                <label class="day-checkbox-label" style="flex: 1; text-align: center;"><input type="checkbox" class="focus-day-chk" value="4" style="display:block; margin: 0 auto 4px;"><span style="font-size:10px; font-weight:700;">Jeu</span></label>
+                <label class="day-checkbox-label" style="flex: 1; text-align: center;"><input type="checkbox" class="focus-day-chk" value="5" style="display:block; margin: 0 auto 4px;"><span style="font-size:10px; font-weight:700;">Ven</span></label>
+                <label class="day-checkbox-label" style="flex: 1; text-align: center;"><input type="checkbox" class="focus-day-chk" value="6" style="display:block; margin: 0 auto 4px;"><span style="font-size:10px; font-weight:700;">Sam</span></label>
+                <label class="day-checkbox-label" style="flex: 1; text-align: center;"><input type="checkbox" class="focus-day-chk" value="0" style="display:block; margin: 0 auto 4px;"><span style="font-size:10px; font-weight:700;">Dim</span></label>
+            </div>
+
+            <div class="section-label">Plages horaires de concentration :</div>
+            <div id="focus-ranges-list" style="display:flex; flex-direction:column; gap:6px; margin-bottom: 10px;">
+                <!-- Dynamically generated ranges -->
+            </div>
+            
+            <div class="add-range-row" style="display: flex; gap: 6px; align-items: center; margin-bottom: 12px;">
+                <input type="time" id="focus-range-start" class="search-input" style="flex: 1; height: 26px; padding: 2px 6px;" value="09:00">
+                <span style="font-size: 11px; color: var(--txt-muted);">à</span>
+                <input type="time" id="focus-range-end" class="search-input" style="flex: 1; height: 26px; padding: 2px 6px;" value="17:00">
+                <button id="btn-add-focus-range" class="btn-sm btn-dark" style="width: auto; height: 26px; padding: 0 10px; border-radius: 8px;">Ajouter</button>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 12px;">
+                <label for="focusHoursMode" class="section-label" style="display:block; margin-bottom:4px;">Type de blocage en Focus Hours :</label>
+                <select id="focusHoursMode" class="profile-select" style="width: 100%;">
+                    <option value="hard">🚫 Strict (Blocage complet)</option>
+                    <option value="warn">🌫️ Avertissement (Flou & Bannière)</option>
+                </select>
+            </div>
+            
+            <button id="saveFocusHours" class="btn-sm btn-primary" style="margin-top: 6px; height: 30px;">Sauvegarder Focus Hours</button>
+        </div>
+    </div>
+
+    <!-- 🎨 PERSONNALISATION & REDIRECTION v4.1 -->
+    <div class="section-card">
+        <div class="section-title">🎨 Personnalisation & Redirection</div>
+        <p class="section-desc" style="margin-bottom: 8px;">Personnalisez les thèmes, le logo YouTube, et configurez les options de redirection active après blocage.</p>
+        
+        <label for="selForcedTheme" style="font-size: 11px; font-weight: 600; display:block; margin-bottom: 4px;">Thème visuel :</label>
+        <select id="selForcedTheme" class="profile-select" style="width: 100%; margin-bottom: 12px;">
+            <option value="auto">💻 Thème Système / Auto</option>
+            <option value="dark">🌙 Thème Sombre classique</option>
+            <option value="light">☀️ Thème Clair épuré</option>
+            <option value="oled">🖤 OLED (Noir Pur)</option>
+            <option value="cyberpunk">👾 Cyberpunk Neon (Pink/Cyan)</option>
+            <option value="forest">🌲 Sleek Forest Green</option>
+            <option value="sunset">🌇 Sunset Warm (Orange/Amber)</option>
+        </select>
+
+        <label for="customLogoText" style="font-size: 11px; font-weight: 600; display:block; margin-bottom: 4px;">Logo YouTube Texte personnalisé (ex: WORK) :</label>
+        <input type="text" id="customLogoText" class="search-input" placeholder="Laissez vide pour le logo normal" style="margin-top: 4px; margin-bottom: 12px; height: 26px;">
+
+        <label for="customLogoUrl" style="font-size: 11px; font-weight: 600; display:block; margin-bottom: 4px;">Logo YouTube Image URL (Alternative) :</label>
+        <input type="text" id="customLogoUrl" class="search-input" placeholder="https://..." style="margin-top: 4px; margin-bottom: 12px; height: 26px;">
+
+        <div class="toggle-row" style="padding: 6px 0; border-bottom: none; display: flex; align-items: center; justify-content: space-between;">
+            <label for="useMotivationDashboard" class="trow-label" style="font-size:11px; cursor: pointer;">Afficher le Tableau de Motivation après blocage</label>
+            <label class="switch"><input type="checkbox" id="useMotivationDashboard"><span class="slider"></span></label>
+        </div>
+
+        <div class="toggle-row" style="padding: 6px 0 10px; border-bottom: none; display: flex; align-items: center; justify-content: space-between;">
+            <label for="activeRedirectionEnabled" class="trow-label" style="font-size:11px; cursor: pointer;">Activer la redirection active</label>
+            <label class="switch"><input type="checkbox" id="activeRedirectionEnabled"><span class="slider"></span></label>
+        </div>
+
+        <div id="redirection-url-group" style="display: none; margin-bottom: 12px;">
+            <label for="activeRedirectionUrl" style="font-size: 11px; font-weight: 600; display:block; margin-bottom: 4px;">Lien de redirection de travail (ex: Notion, GitHub) :</label>
+            <input type="text" id="activeRedirectionUrl" class="search-input" placeholder="https://notion.so" style="height: 26px; margin-top: 4px;">
+        </div>
+
+        <label for="favoriteChannels" style="font-size: 11px; font-weight: 600; display:block; margin-bottom: 4px;">Chaînes Favorites (Non-bloquées en Pomodoro/Focus) :</label>
+        <textarea id="favoriteChannels" class="search-input" placeholder="Squeezie, Feldup, Vilebrequin..." style="margin-top: 4px; height: 44px; resize: none;"></textarea>
+        
+        <button id="saveCustomUI" class="btn-sm btn-primary" style="margin-top:10px; height: 30px;">Sauvegarder les réglages UI</button>
+
+    <div class="section-card">
+        <div class="section-title">⏭️ Fin de Vidéo Anticipée</div>
+        <p class="section-desc">Passe automatiquement à la vidéo suivante quelques secondes avant la fin.</p>
+        <div class="threshold-row">
+            <label class="switch" title="Activer le saut anticipé">
+                <input type="checkbox" id="skipBeforeEndEnabled">
+                <span class="slider"></span>
+            </label>
+            <span class="thr-label" style="margin-left: 8px;">Passer avant la fin de</span>
+            <input type="number" id="skipBeforeEnd" min="1" max="300" placeholder="10">
+            <span class="thr-pct">sec</span>
+            <button id="saveSkipBeforeEnd" class="btn-sm btn-dark">Sauvegarder</button>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <div class="section-title">⚙️ Export / Import Paramètres</div>
+        <p class="section-desc">Sauvegarde ou restaure tous tes paramètres (toggles, seuils, filtres durée).</p>
+        <div class="btn-grid-2">
+            <button id="btnExportSettings" class="btn-dark btn-sm">💾 Exporter</button>
+            <label class="btn-secondary btn-sm label-btn label-btn-with-file">
+                📂 Importer
+                <input type="file" id="importSettingsFile" accept=".json">
+            </label>
+        </div>
+    </div>
+
+        <div class="section-card">
+        <div class="section-title">💼 Centre de Sauvegarde & Rapports</div>
+        <p class="section-desc" style="margin-bottom: 14px;">Gérez la synchronisation cloud, importez/exportez vos données et générez des rapports analytiques.</p>
+        
+        <!-- Section Cloud moderne -->
+        <div class="modern-backup-card">
+            <div class="modern-backup-header">
+                <span class="m-backup-icon">☁️</span>
+                <div class="m-backup-info">
+                    <span class="m-backup-title">Synchronisation Cloud</span>
+                    <span class="m-backup-desc">Données sauvegardées en ligne</span>
+                </div>
+            </div>
+            <div class="modern-backup-actions">
+                <button id="btnForceCloudSync" class="btn-modern-primary" title="Synchroniser vos données vers Google Cloud">🔄 Synchroniser</button>
+                <button id="btnRecoverCloud" class="btn-modern-secondary" title="Restaurer vos données depuis Google Cloud">📥 Restaurer</button>
+            </div>
+        </div>
+
+        <div style="height: 6px;"></div>
+
+        <!-- Section Sauvegardes Locales moderne -->
+        <div class="modern-backup-section">
+            <div class="modern-backup-section-title">💾 Sauvegardes Locales</div>
+            
+            <div class="modern-backup-grid">
+                <!-- Bloc 1: Listes -->
+                <div class="modern-grid-card">
+                    <div class="mg-card-icon">🚫</div>
+                    <div class="mg-card-title">Listes de blocage</div>
+                    <div class="mg-card-desc">Vidéos et chaînes</div>
+                    <div class="mg-card-buttons">
+                        <button id="btnExportJSON" class="btn-mg-export" title="Exporter vos listes">💾 Exporter</button>
+                        <label class="btn-mg-import label-btn-with-file" title="Importer des listes">
+                            📂 Importer
+                            <input type="file" id="importFile" accept=".json">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Bloc 2: Réglages -->
+                <div class="modern-grid-card">
+                    <div class="mg-card-icon">⚙️</div>
+                    <div class="mg-card-title">Configuration</div>
+                    <div class="mg-card-desc">Réglages des filtres</div>
+                    <div class="mg-card-buttons">
+                        <button id="btnExportSettings2" class="btn-mg-export" title="Exporter vos réglages">💾 Exporter</button>
+                        <label class="btn-mg-import label-btn-with-file" title="Importer des réglages">
+                            📂 Importer
+                            <input type="file" id="importSettingsFile2" accept=".json">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Bloc 3: Stats -->
+                <div class="modern-grid-card">
+                    <div class="mg-card-icon">📈</div>
+                    <div class="mg-card-title">Historique & Stats</div>
+                    <div class="mg-card-desc">Temps et vues</div>
+                    <div class="mg-card-buttons">
+                        <button id="btnExportStatsJSON" class="btn-mg-export" title="Exporter vos statistiques">💾 Exporter</button>
+                        <label class="btn-mg-import label-btn-with-file" title="Importer des statistiques">
+                            📂 Importer
+                            <input type="file" id="importStatsFile" accept=".json">
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Cloud & Backups Tournants -->
+        <div class="backup-group mt10" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 15px; margin-bottom: 12px;">
+            <div class="backup-group-title" style="font-size: 10px; font-weight: 700; color: var(--txt-muted); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 10px;">☁️ Cloud & Historique</div>
+            <div class="backup-row" style="display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border);">
+                <span class="backup-row-label" style="font-size: 12px; font-weight: 500; color: var(--txt-main);">Sauvegarde Cloud (Drive)</span>
+                <div class="backup-row-btns" style="display: flex; gap: 6px;">
+                    <button id="btnCloudBackup" class="btn-modern-primary btn-action" style="padding: 4px 8px !important; font-size: 10px !important; width: auto !important;">☁️ Synchroniser</button>
+                    <button id="btnCloudRestore" class="btn-modern-secondary btn-action" style="padding: 4px 8px !important; font-size: 10px !important; width: auto !important;">📥 Charger</button>
+                </div>
+            </div>
+            <div class="backup-row" style="display: flex; align-items: center; justify-content: space-between; padding: 6px 0;">
+                <span class="backup-row-label" style="font-size: 12px; font-weight: 500; color: var(--txt-main);">Sauvegardes Tournantes</span>
+                <div class="backup-row-btns" style="display: flex; gap: 6px; align-items: center;">
+                    <select id="selRollingBackup" class="profile-select" style="padding: 4px 8px !important; font-size: 10px !important; width: 120px !important;">
+                        <option value="">Aucun historique</option>
+                    </select>
+                    <button id="btnRestoreRolling" class="btn-modern-primary btn-action" style="padding: 4px 8px !important; font-size: 10px !important; width: auto !important;">Restaurer</button>
+                </div>
+            </div>
+        </div>
+
+        <div style="height: 10px;"></div>
+
+        <!-- Section Analyses et Utilitaires moderne -->
+        <div class="modern-backup-card" style="border-color: rgba(16, 185, 129, 0.25);">
+            <div class="modern-backup-header">
+                <span class="m-backup-icon" style="color: #10b981;">📊</span>
+                <div class="m-backup-info">
+                    <span class="m-backup-title">Rapports & Productivité</span>
+                    <span class="m-backup-desc">Rapports PDF et analyses mensuelles</span>
+                </div>
+            </div>
+            <div class="modern-backup-actions" style="grid-template-columns: repeat(2, 1fr);">
+                <button id="btnExportPDF" class="btn-modern-success" title="Générer un rapport PDF complet de vos données">📑 Rapport PDF</button>
+                <button id="btnMonthlyReportBackup" class="btn-modern-success-alt" title="Afficher votre bilan de productivité mensuel">📅 Bilan Mensuel</button>
+            </div>
+            <div class="btn-grid-2 mt6">
+                <button id="btnExportCSV" class="btn-ghost btn-sm" title="Exporter vos statistiques au format tableur CSV" style="font-size: 11px !important;">📄 Exporter au format CSV</button>
+                <button id="btnMigrateOld" class="btn-ghost btn-sm" title="Migrer l'ancien format de stockage local de l'extension" style="font-size: 11px !important;">📥 Convertir Stockage</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="shortcuts-hint">
+        <kbd>Alt+B</kbd> bloquer · <kbd>Alt+S</kbd> stats · <kbd>Alt+V</kbd> vidéos · <kbd>Alt+C</kbd> chaînes · <kbd>Esc</kbd> retour
+    </div>
+    <button id="clearData" class="btn-danger full-width">🗑️ Tout Réinitialiser</button>
+</div>
+
+<div id="view-stats">
+    <div class="view-header">
+        <button class="btnBack btn-ghost btn-sm">⬅</button>
+        <h2>📊 Statistiques</h2>
+        <div style="width:40px"></div>
+    </div>
+    
+    <!-- Onglets de Navigation Analytique -->
+    <div class="stats-sub-tabs" style="display: flex; gap: 8px; margin: 0 16px 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+        <button id="tabStatsBasic" class="stats-sub-tab active" style="flex:1; background:none; border:none; border-bottom:2px solid #9d00ff; color:var(--text-main); font-weight:700; padding:6px; cursor:pointer; font-size:12px;">📊 Activité</button>
+        <button id="tabStatsAdvanced" class="stats-sub-tab" style="flex:1; background:none; border:none; color:var(--text-muted); font-weight:600; padding:6px; cursor:pointer; font-size:12px;">📈 Analyses Pro</button>
+    </div>
+
+    <!-- CONTENEUR BASIQUE (Activité standard) -->
+    <div id="stats-container-basic" style="display: block;">
+        <div class="period-tabs">
+            <button class="period-tab active" data-period="week">7 jours</button>
+            <button class="period-tab" data-period="month">30 jours</button>
+            <button class="period-tab" data-period="all">Tout</button>
+        </div>
+        <div id="activityChart" class="chart-container"></div>
+        <div id="statsComparison" class="stats-comparison"></div>
+        <div class="stat-grid">
+            <div class="stat-box blue"><span class="stat-lbl">Temps regardé</span><span id="statTimeWatched" class="stat-val">0h 0m</span></div>
+            <div class="stat-box green"><span class="stat-lbl">Temps sauvé</span><span id="statTimeSaved" class="stat-val">0h 0m</span></div>
+            <div class="stat-box purple"><span class="stat-lbl">Vidéos vues</span><span id="statVidsWatched" class="stat-val">0</span></div>
+            <div class="stat-box red"><span class="stat-lbl">Vidéos évitées</span><span id="statVidsBlocked" class="stat-val">0</span></div>
+        </div>
+        <div class="stat-grid-3">
+            <div class="stat-mini orange"><span class="stat-mini-lbl">📈 Moy. /jour</span><span id="statAvgDay" class="stat-mini-val">—</span></div>
+            <div class="stat-mini teal"><span class="stat-mini-lbl">🏆 Meilleur jour</span><span id="statBestDay" class="stat-mini-val">—</span></div>
+            <div class="stat-mini indigo"><span class="stat-mini-lbl">📅 Jours actifs</span><span id="statActiveDays" class="stat-mini-val">—</span></div>
+        </div>
+        <div id="statScoreWrap" class="score-wrap">
+            <div class="score-label">Score de discipline</div>
+            <div class="score-bar-bg"><div id="statScoreBar" class="score-bar-fill"></div></div>
+            <div id="statScoreVal" class="score-val">—</div>
+        </div>
+        
+        <div class="score-wrap" style="margin-top: 12px; margin-bottom: 12px;">
+            <div class="score-label">🎖️ Badges de Réussite</div>
+            <div id="badgesContainer" style="display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap;">
+                <!-- Rendu dynamique -->
+                <span style="font-size: 11px; opacity: 0.6; width: 100%; text-align: center;">Aucun badge pour le moment.</span>
+            </div>
+        </div>
+        <div id="categoryStats" class="category-stats"></div>
+        <div id="gameStats" class="game-stats" style="display:none"></div>
+    </div>
+
+    <!-- CONTENEUR AVANCÉ (Analyses pro et télémétrie) -->
+    <div id="stats-container-advanced" style="display: none; padding: 0 16px;">
+        <!-- 24. Coût de l'attention & 22. Empreinte Carbone -->
+        <div class="stat-grid" style="margin-bottom: 12px;">
+            <div class="stat-box blue">
+                <span class="stat-lbl">💰 Valeur de l'attention</span>
+                <span id="statAttentionCost" class="stat-val">0.00 €</span>
+                <div style="display: flex; align-items: center; justify-content: center; margin-top: 6px; gap: 4px;">
+                    <span style="font-size: 8px; opacity: 0.8;">Tarif:</span>
+                    <input type="number" id="inputHourlyRate" value="15" style="width: 32px; font-size: 9px; background: rgba(255,255,255,0.15); border: none; color: white; border-radius: 3px; padding: 1px 3px; text-align: center;">
+                    <span style="font-size: 8px; opacity: 0.8;">€/h</span>
+                </div>
+            </div>
+            <div class="stat-box green">
+                <span class="stat-lbl">🌱 Impact Carbone</span>
+                <span id="statCarbonFootprint" class="stat-val">0 g CO2</span>
+                <span style="font-size: 8px; opacity: 0.7; margin-top: 4px;">~3.2g CO2 par minute</span>
+            </div>
+        </div>
+
+        <!-- 25. Taux de rebond & 26. Rétention Moyenne -->
+        <div class="stat-grid-3" style="margin-bottom: 12px; grid-template-columns: repeat(2, 1fr);">
+            <div class="stat-mini orange">
+                <span class="stat-mini-lbl">🔗 Taux de Rebond</span>
+                <span id="statReboundRate" class="stat-mini-val">0 %</span>
+                <span id="statReboundDetail" style="font-size: 8px; opacity: 0.7;">0 recherche / 0 sugg.</span>
+            </div>
+            <div class="stat-mini teal">
+                <span class="stat-mini-lbl">⏱️ Rétention Moyenne</span>
+                <span id="statAvgRetention" class="stat-mini-val">0 %</span>
+                <span id="statRetentionDetail" style="font-size: 8px; opacity: 0.7;">0 vidéo(s)</span>
+            </div>
+        </div>
+
+        <!-- 30. Interruptions & 29. Index de Diversité -->
+        <div class="stat-grid-3" style="margin-bottom: 12px; grid-template-columns: repeat(2, 1fr);">
+            <div class="stat-mini red">
+                <span class="stat-mini-lbl">💔 Interruptions</span>
+                <span id="statInterruptions" class="stat-mini-val">0</span>
+                <span style="font-size: 8px; opacity: 0.7;">Arrêt à moins de 85%</span>
+            </div>
+            <div class="stat-mini indigo">
+                <span class="stat-mini-lbl">🌐 Diversité Thématique</span>
+                <span id="statDiversityIndex" class="stat-mini-val">0 %</span>
+                <span id="statDiversityLevel" style="font-size: 8px; opacity: 0.7;">Bulle algorithmique</span>
+            </div>
+        </div>
+
+        <!-- 23. Corrélation quotidien Productivité vs Divertissement -->
+        <div class="score-wrap" style="margin-bottom: 16px;">
+            <div class="score-label" style="display:flex; justify-content:space-between;">
+                <span>📈 Balance de Productivité</span>
+                <span id="statProductivityRatio" style="font-weight: 700; color: #10b981;">0% Productif</span>
+            </div>
+            <div class="score-bar-bg" style="height: 10px; background: #ef4444; overflow: hidden; display: flex; border-radius: 5px;">
+                <div id="statProductiveBar" class="score-bar-fill" style="width: 0%; background: #10b981; transition: width 0.3s; height: 100%;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 9px; opacity: 0.7; margin-top: 4px;">
+                <span>Éducation & Sciences (vert)</span>
+                <span>Gaming & Humour (rouge)</span>
+            </div>
+        </div>
+
+        <!-- 28. Répartition Vitesse de lecture -->
+        <div class="score-wrap" style="margin-bottom: 16px;">
+            <div class="score-label">⚡ Répartition des Vitesses de Lecture</div>
+            <div id="speedRepartitionBars" style="display: flex; flex-direction: column; gap: 4px; margin-top: 6px;">
+                <!-- Rendu dynamique dans popup.js -->
+            </div>
+        </div>
+
+        <!-- 21. Heatmap (Carte thermique hebdomadaire 7x24) -->
+        <div class="score-wrap" style="margin-bottom: 16px; display: flex; flex-direction: column; align-items: stretch;">
+            <div class="score-label" style="margin-bottom: 6px;">📅 Carte Thermique d'Activité Hebdomadaire</div>
+            <div style="font-size: 8px; display: flex; justify-content: space-between; margin-bottom: 4px; opacity: 0.7;">
+                <span>Lun - Dim (Lignes)</span>
+                <span>0h - 23h (Colonnes)</span>
+            </div>
+            <div id="heatmapGrid" class="heatmap-grid" style="
+                display: grid;
+                grid-template-rows: repeat(7, 1fr);
+                gap: 2px;
+                background: rgba(255,255,255,0.03);
+                padding: 4px;
+                border-radius: 6px;
+                border: 1px solid var(--border-color);
+            ">
+                <!-- Rendu dynamique dans popup.js -->
+            </div>
+        </div>
+
+        <!-- Top 10 Chaînes (27) -->
+        <div id="topTenChannels" class="category-stats" style="margin-top: 10px; margin-bottom: 16px;">
+            <!-- Top 10 Rendu dynamique dans popup.js -->
+        </div>
+
+        <!-- Suivi des Mots-clés (49) -->
+        <div class="score-wrap" style="margin-bottom: 16px;">
+            <div class="score-label">🔠 Mots-clés les plus regardés</div>
+            <div id="topKeywordsContainer" style="display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap;">
+                <!-- Rendu dynamique -->
+                <span style="font-size: 11px; opacity: 0.6; width: 100%; text-align: center;">Pas de données suffisantes.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions globales du rapport -->
+    <div class="btn-grid-2 mt10">
+        <button id="btnExportStatsCSV"      class="btn-dark btn-sm">📄 Export CSV</button>
+        <button id="btnExportStatsJSONView" class="btn-dark btn-sm">💾 Export JSON</button>
+    </div>
+    <div class="btn-grid-2 mt6">
+        <button id="btnExportPDFStats" class="btn-secondary btn-sm">📑 Rapport PDF</button>
+        <button id="btnMonthlyReport"  class="btn-secondary btn-sm">📅 Rapport Mensuel</button>
+    </div>
+</div>
+
+<div id="view-list">
+    <div class="view-header">
+        <button class="btnBack btn-ghost btn-sm">⬅</button>
+        <h2 id="list-title">Liste</h2>
+        <div style="width:40px"></div>
+    </div>
+    <input type="text" id="searchList" placeholder="🔍 Rechercher…" class="search-input">
+    <div id="list-container"></div>
+</div>
+
+<div id="view-channel-stats">
+    <div class="view-header">
+        <button class="btnBack btn-ghost btn-sm">⬅</button>
+        <h2>🏆 Classement Chaînes</h2>
+        <div style="width:40px"></div>
+    </div>
+    <p class="section-desc" style="margin:0 0 10px">TOP 15 les plus regardées</p>
+    <div id="top-15-channels"></div>
+    <div class="section-label mt14">Toutes les chaînes</div>
+    <input type="text" id="searchChannelStats" placeholder="🔍 Rechercher une chaîne…" class="search-input">
+    <div id="all-channels-stats" class="scroll-list"></div>
+</div>
+
+<div id="view-cloud">
+    <div class="view-header">
+        <button class="btnBack btn-ghost btn-sm">⬅</button>
+        <h2>☁️ Cloud & Hub</h2>
+        <div style="width:40px"></div>
+    </div>
+    
+    <div class="cloud-tabs" style="display: flex; gap: 8px; margin: 0 16px 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+        <button id="tabCloudAccount" class="cloud-tab active" style="flex: 1; background: none; border: none; border-bottom: 2px solid var(--accent); color: var(--txt-main); font-weight: 700; padding: 6px; cursor: pointer; font-size: 12px;">👤 Compte</button>
+        <button id="tabCloudCommunity" class="cloud-tab" style="flex: 1; background: none; border: none; color: var(--txt-muted); font-weight: 600; padding: 6px; cursor: pointer; font-size: 12px;">👥 Communauté</button>
+    </div>
+
+    <!-- PANEL 1: ACCOUNT -->
+    <div id="panel-cloud-account" style="display: block; padding: 0 16px;">
+        <div id="cloud-auth-form" style="display: block;">
+            <p class="section-desc" style="margin-bottom: 12px;">Connectez-vous à votre VPS pour synchroniser vos listes de blocage et statistiques.</p>
+            
+            <div id="auth-mode-container" style="display: flex; justify-content: center; margin-bottom: 12px; gap: 14px;">
+                <label style="cursor: pointer; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                    <input type="radio" name="auth-mode" value="login" checked style="accent-color: var(--accent);"> Connexion
+                </label>
+                <label style="cursor: pointer; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                    <input type="radio" name="auth-mode" value="register" style="accent-color: var(--accent);"> Créer un compte
+                </label>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 10px;">
+                <label for="cloud-email" style="font-size: 11px; font-weight: 600; color: var(--txt-muted); display: block; margin-bottom: 4px;">Adresse E-mail</label>
+                <input type="email" id="cloud-email" class="search-input" placeholder="email@exemple.com" style="margin-bottom: 0; height: 32px;">
+            </div>
+
+            <div class="input-group" id="group-cloud-name" style="margin-bottom: 10px; display: none;">
+                <label for="cloud-name" style="font-size: 11px; font-weight: 600; color: var(--txt-muted); display: block; margin-bottom: 4px;">Nom / Pseudo</label>
+                <input type="text" id="cloud-name" class="search-input" placeholder="MonPseudo" style="margin-bottom: 0; height: 32px;">
+            </div>
+
+            <div class="input-group" style="margin-bottom: 16px;">
+                <label for="cloud-password" style="font-size: 11px; font-weight: 600; color: var(--txt-muted); display: block; margin-bottom: 4px;">Mot de passe</label>
+                <input type="password" id="cloud-password" class="search-input" placeholder="••••••••" style="margin-bottom: 0; height: 32px;">
+            </div>
+
+            <button id="btnCloudAuthSubmit" class="btn-modern-primary full-width" style="margin-bottom: 8px; height: 34px;">Se connecter</button>
+            <div style="text-align: center; margin-bottom: 12px;">
+                <span id="linkCloudTerms" style="font-size: 10px; color: var(--txt-muted); cursor: pointer; text-decoration: underline;">Conditions d'utilisation</span>
+            </div>
+        </div>
+
+        <div id="cloud-logged-in" style="display: none;">
+            <div class="modern-backup-card" style="border: 1px solid var(--border-accent); margin-bottom: 16px; background: rgba(139,92,246,0.05); padding: 12px; border-radius: var(--radius-md); display: flex; align-items: center; gap: 10px;">
+                <span class="m-backup-icon" style="font-size: 24px;">👤</span>
+                <div class="m-backup-info" style="display: flex; flex-direction: column;">
+                    <span class="m-backup-title" id="lbl-cloud-username" style="font-weight: 700; color: var(--txt-main); font-size: 13px;">Chargement...</span>
+                    <span class="m-backup-desc" id="lbl-cloud-email" style="font-size: 11px; color: var(--txt-muted);">email@exemple.com</span>
+                </div>
+            </div>
+
+            <p class="section-desc" style="margin-bottom: 12px;">Sauvegardez vos données d'extension ou restaurez-les depuis le VPS.</p>
+
+            <div class="btn-grid-2" style="margin-bottom: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <button id="btnVPSBackup" class="btn-modern-primary" style="height: 34px; padding: 0;">☁️ Sauvegarder</button>
+                <button id="btnVPSRestore" class="btn-modern-secondary" style="height: 34px; padding: 0;">📥 Restaurer</button>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--border); margin-bottom: 16px;">
+
+            <button id="btnVPSLogout" class="btn-ghost btn-sm full-width" style="margin-bottom: 8px; height: 28px;">Se déconnecter</button>
+            <button id="btnVPSDeleteAccount" class="btn-danger-alt btn-sm full-width" style="font-size: 11px; padding: 6px; height: 28px; margin-bottom: 8px;">🗑️ Supprimer le compte et les données</button>
+            <div style="text-align: center; margin-bottom: 4px;">
+                <span id="linkCloudTerms2" style="font-size: 10px; color: var(--txt-muted); cursor: pointer; text-decoration: underline;">Conditions d'utilisation</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 2: COMMUNITY -->
+    <div id="panel-cloud-community" style="display: none; padding: 0 16px;">
+        <!-- Sélecteur segmenté premium -->
+        <div class="segmented-control" style="background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); border-radius: 20px; padding: 3px; display: flex; position: relative; margin-bottom: 14px;">
+            <button id="subTabCommLists" class="segmented-btn active" style="flex: 1; border: none; background: none; color: var(--txt-main); font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 17px; cursor: pointer; transition: all 0.25s var(--ease); z-index: 2; display: flex; align-items: center; justify-content: center; gap: 6px;">📋 Listes</button>
+            <button id="subTabCommStats" class="segmented-btn" style="flex: 1; border: none; background: none; color: var(--txt-muted); font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 17px; cursor: pointer; transition: all 0.25s var(--ease); z-index: 2; display: flex; align-items: center; justify-content: center; gap: 6px;">📊 Stats</button>
+            <button id="subTabCommParams" class="segmented-btn" style="flex: 1; border: none; background: none; color: var(--txt-muted); font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 17px; cursor: pointer; transition: all 0.25s var(--ease); z-index: 2; display: flex; align-items: center; justify-content: center; gap: 6px;">⚙️ Réglages</button>
+            <div id="segmented-glider" class="segmented-glider" style="position: absolute; top: 3px; left: 3px; height: calc(100% - 6px); width: calc(33.33% - 4px); background: var(--accent-gradient); border-radius: 17px; z-index: 1; transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3);"></div>
+        </div>
+
+        <!-- Formulaire de publication pliable -->
+        <div id="collapsible-publish-card" style="border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-card); margin-bottom: 14px; overflow: hidden; transition: all 0.3s var(--ease);">
+            <div id="publish-card-header" style="padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: rgba(255, 255, 255, 0.01); user-select: none;">
+                <span style="font-weight: 700; font-family: 'Outfit', sans-serif; font-size: 11px; color: var(--txt-main); display: flex; align-items: center; gap: 6px;">📢 Partager du contenu sur le Hub</span>
+                <span id="publish-card-arrow" style="font-size: 10px; transition: transform 0.3s var(--ease); color: var(--txt-muted);">▼</span>
+            </div>
+            
+            <div id="publish-card-body" style="max-height: 0; padding: 0 14px; transition: all 0.3s var(--ease); overflow: hidden; opacity: 0;">
+                <!-- Formulaire listes -->
+                <div id="comm-publish-list-box" style="display: none; padding-bottom: 12px; border-top: 1px solid var(--border); padding-top: 10px;">
+                    <div style="font-weight: 600; font-size: 11px; margin-bottom: 6px; color: var(--txt-muted);">Partager votre liste de blocage actuelle</div>
+                    <input type="text" id="comm-list-desc" class="search-input" placeholder="Description (ex: Ma liste spéciale focus 📚)" style="height: 28px; font-size: 11px; margin-bottom: 8px; width: 100%;">
+                    <button id="btnCommPublishList" class="btn-modern-primary btn-sm" style="width: auto; padding: 4px 14px; height: 26px; font-size: 11px;">Publier la liste</button>
+                </div>
+                
+                <!-- Formulaire stats -->
+                <div id="comm-publish-stats-box" style="display: none; padding-bottom: 12px; border-top: 1px solid var(--border); padding-top: 10px;">
+                    <div style="font-weight: 600; font-size: 11px; margin-bottom: 6px; color: var(--txt-muted);">Partager vos statistiques de productivité</div>
+                    <input type="text" id="comm-stats-desc" class="search-input" placeholder="Description (ex: Mon record de 50h sauvées ! 🏆)" style="height: 28px; font-size: 11px; margin-bottom: 8px; width: 100%;">
+                    <button id="btnCommPublishStats" class="btn-modern-primary btn-sm" style="width: auto; padding: 4px 14px; height: 26px; font-size: 11px;">Partager mes stats</button>
+                </div>
+
+                <!-- Formulaire réglages -->
+                <div id="comm-publish-params-box" style="display: none; padding-bottom: 12px; border-top: 1px solid var(--border); padding-top: 10px;">
+                    <div style="font-weight: 600; font-size: 11px; margin-bottom: 6px; color: var(--txt-muted);">Partager vos réglages actuels de l'extension</div>
+                    <input type="text" id="comm-params-desc" class="search-input" placeholder="Description (ex: Réglages super-focus sans distraction ⚙️)" style="height: 28px; font-size: 11px; margin-bottom: 8px; width: 100%;">
+                    <button id="btnCommPublishParams" class="btn-modern-primary btn-sm" style="width: auto; padding: 4px 14px; height: 26px; font-size: 11px;">Partager mes réglages</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Listes Communauté -->
+        <div id="comm-lists-section" style="display: block;">
+            <div id="community-lists-container" class="scroll-list" style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px;">
+                <p class="section-desc" style="text-align: center; margin-top: 20px;">Chargement des listes de la communauté...</p>
+            </div>
+        </div>
+
+        <!-- Section Statistiques Communauté -->
+        <div id="comm-stats-section" style="display: none;">
+            <div id="community-stats-container" class="scroll-list" style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px;">
+                <p class="section-desc" style="text-align: center; margin-top: 20px;">Chargement des statistiques...</p>
+            </div>
+        </div>
+
+        <!-- Section Réglages Communauté -->
+        <div id="comm-params-section" style="display: none;">
+            <div id="community-params-container" class="scroll-list" style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px;">
+                <p class="section-desc" style="text-align: center; margin-top: 20px;">Chargement des réglages...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="termsModal" class="modal-overlay" style="display: none;">
+    <div class="modal-box" style="max-width: 320px; text-align: left;">
+        <h3 style="font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; color: var(--txt-main);">📄 Conditions d'utilisation</h3>
+        <div style="max-height: 200px; overflow-y: auto; font-size: 11px; line-height: 1.4; color: var(--txt-muted); margin-bottom: 14px; padding-right: 4px;">
+            <p style="margin-bottom: 6px;"><strong>1. Sauvegarde et Synchronisation</strong><br>En utilisant la fonctionnalité de synchronisation Cloud, vous autorisez notre serveur VPS à stocker vos listes de blocage de vidéos/chaînes ainsi que vos statistiques de productivité associées à votre compte.</p>
+            <p style="margin-bottom: 6px;"><strong>2. Propriété et Partage</strong><br>Vous êtes libre de partager vos listes ou statistiques sur le Hub Communautaire. Ces partages sont visibles publiquement par tous les utilisateurs de l'extension et peuvent être importés librement par d'autres.</p>
+            <p style="margin-bottom: 6px;"><strong>3. Règles de conduite</strong><br>Tout partage à caractère injurieux, inapproprié ou abusif via les descriptions sera immédiatement supprimé et pourra conduire à un bannissement de votre compte.</p>
+            <p style="margin-bottom: 6px;"><strong>4. Suppression de données</strong><br>Vous conservez un contrôle total sur vos données. Vous pouvez à tout moment vous déconnecter ou supprimer définitivement votre compte ainsi que l'intégralité de vos données sauvegardées sur le VPS via les boutons dédiés.</p>
+        </div>
+        <button id="termsModalCloseBtn" class="btn-modern-primary full-width" style="height: 32px; font-size: 11px;">J'ai compris</button>
+    </div>
+</div>
+
+<div id="customModal" class="modal-overlay">
+    <div class="modal-box">
+        <p id="modalMessage"></p>
+        <div class="modal-actions">
+            <button id="modalBtnNo"  class="btn-ghost">Annuler</button>
+            <button id="modalBtnYes" class="btn-danger">Confirmer</button>
+        </div>
+    </div>
+</div>
+<div id="toast-container"></div>
+<script src="popup.js"></script>
+</body>
+</html>
